@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:sabak_16_2_weather/conctans/app_text_styles.dart';
+import 'package:sabak_16_2_weather/conctans/linner_gradient.dart';
 import 'package:sabak_16_2_weather/widgets/slider_view.dart';
 import 'package:sabak_16_2_weather/widgets/weather_day_card.dart';
 import 'package:sabak_16_2_weather/widgets/weather_view_banner.dart';
@@ -67,15 +68,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: SingleChildScrollView(
         child: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
-                colors: [
-                  Color(0xff66d8f1),
-                  Color(0xff97eafc),
-                ]),
-          ),
+          decoration: const BoxDecoration(gradient: LinearGradientColor.liner),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 31.5),
             child:
@@ -140,42 +133,24 @@ class _MyHomePageState extends State<MyHomePage> {
                 text2: '64%',
               ),
               const SliderView(),
-              const WeatherDaysCard(
-                text1: 'now',
-                image: 'images/icon_1.png',
-                text2: '19',
-              ),
             ]),
           ),
         ),
       ),
-      bottomNavigationBar: SizedBox(
-        height: 98.99,
-        child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          itemBuilder: (context, index) {
-            return Container(
-              width: 55.19,
-              height: 98.99,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(
-                  34.45,
-                ),
-              ),
-              child: const Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('now'),
-                    // Image.asset(),
-
-                    Text("19"),
-                  ],
-                ),
-              ),
-            );
-          },
+      bottomNavigationBar: Container(
+        decoration: const BoxDecoration(gradient: LinearGradientColor.liner),
+        child: SizedBox(
+          height: 98.99,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemBuilder: (context, index) {
+              return const WeatherDayCard(
+                text1: 'now',
+                image: 'images/icon_1.png',
+                text2: '19',
+              );
+            },
+          ),
         ),
       ),
     ));
