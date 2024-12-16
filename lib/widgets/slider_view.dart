@@ -10,7 +10,7 @@ class SliderView extends StatelessWidget {
     return Column(
       children: [
         const Padding(
-          padding: EdgeInsets.only(top: 27.6, bottom: 10),
+          padding: EdgeInsets.only(top: 27.6, bottom: 8),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [

@@ -17,21 +17,32 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   String weatherInfo = "Маалымат жуктолуудо";
-  String sityName = "Шаарлар";
-
+  String sityName = "";
+  String countryN = "";
+  String weathericon = "";
+  String weathermain = "";
+  int weatherwind = 0;
   void weatherFun() async {
     final url = Uri.parse(
-        'https://api.openweathermap.org/data/2.5/weather?q=bishkek,&appid=41aa18abb8974c0ea27098038f6feb1b');
+        'https://api.openweathermap.org/data/2.5/weather?q=osh,&appid=41aa18abb8974c0ea27098038f6feb1b');
     final response = await http.get(url);
     if (response.statusCode == 200) {
       print(response.body);
       final data = jsonDecode(response.body);
       final name = data['name'];
       final temp = data['main']['temp'];
+      final icon = data['weather'][0]['icon'];
       final weatherKelvin = temp - 273.15;
+      final countryName = data["sys"]["country"];
+      final main = data["weather"][0]["main"];
+      final wind = data["wind"]["speed"];
       setState(() {
         weatherInfo = weatherKelvin.toStringAsFixed(0);
         sityName = name;
+        countryN = countryN;
+        weathericon = icon;
+        weathermain = main;
+        weatherwind = wind;
       });
     } else {
       print(response.statusCode);
@@ -73,20 +84,21 @@ class _MyHomePageState extends State<MyHomePage> {
             padding: const EdgeInsets.symmetric(horizontal: 31.5),
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              const Text(
-                "Bishkek,",
+              Text(
+                sityName,
                 style: AppTextStyles.lacotionStyles,
               ),
-              const Text("Kyrgyzstan", style: AppTextStyles.lacotionStyles),
+              Text(countryN, style: AppTextStyles.lacotionStyles),
               const Text(
                 "Tue,jan 30",
                 style: AppTextStyles.dataStyles,
               ),
-              // Text("($sityName шаарындагы температура: $weatherInfo gradus"),
+              //Text("($sityName шаарындагы температура: $weatherInfo gradus"),
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Image.asset(
-                    'images/cludy.png',
+                  Image.network(
+                    'https://openweathermap.org/img/wn/$weathericon@2x.png',
                     width: 250,
                     height: 250,
                     fit: BoxFit.fill,
@@ -110,7 +122,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         ],
                       ),
                       Text(
-                        sityName,
+                        weathermain,
                         style: AppTextStyles.tempNameStyles,
                       )
                     ],
@@ -122,11 +134,10 @@ class _MyHomePageState extends State<MyHomePage> {
                 text1: 'RainFall',
                 text2: '3 cm',
               ),
-              const WeatherVanner(
-                image: 'assets/images/Vector.png',
-                text1: 'Wind',
-                text2: '19km/h',
-              ),
+              WeatherVanner(
+                  image: 'assets/images/Vector.png',
+                  text1: 'Wind',
+                  text2: "${weatherwind.toString()} km/h"),
               const WeatherVanner(
                 image: 'assets/images/Rectangle 14.png',
                 text1: 'Humidity',
