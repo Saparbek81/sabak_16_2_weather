@@ -21,7 +21,7 @@ class _MyHomePageState extends State<MyHomePage> {
   String countryN = "";
   String weathericon = "";
   String weathermain = "";
-  int weatherwind = 0;
+  double weatherwind = 0;
   void weatherFun() async {
     final url = Uri.parse(
         'https://api.openweathermap.org/data/2.5/weather?q=osh,&appid=41aa18abb8974c0ea27098038f6feb1b');
@@ -29,12 +29,12 @@ class _MyHomePageState extends State<MyHomePage> {
     if (response.statusCode == 200) {
       print(response.body);
       final data = jsonDecode(response.body);
-      final name = data['name'];
-      final temp = data['main']['temp'];
-      final icon = data['weather'][0]['icon'];
+      final name = data['name'] ?? "";
+      final temp = data['main']['temp'] ?? 0.0;
+      final icon = data['weather'][0]['icon'] ?? "";
       final weatherKelvin = temp - 273.15;
-      final countryName = data["sys"]["country"];
-      final main = data["weather"][0]["main"];
+      final countryName = data["sys"]["country"] ?? "";
+      final main = data["weather"][0]["main"] ?? "";
       final wind = data["wind"]["speed"];
       setState(() {
         weatherInfo = weatherKelvin.toStringAsFixed(0);
@@ -98,7 +98,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Image.network(
-                    'https://openweathermap.org/img/wn/$weathericon@2x.png',
+                    weathericon.isNotEmpty
+                        ? 'https://openweathermap.org/img/wn/$weathericon@2x.png'
+                        : 'assets/images/icons/search.png',
                     width: 250,
                     height: 250,
                     fit: BoxFit.fill,
